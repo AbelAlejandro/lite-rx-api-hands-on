@@ -1,6 +1,7 @@
 package io.pivotal.literx;
 
 import io.pivotal.literx.domain.User;
+import java.util.Locale;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,27 +14,33 @@ public class Part04Transform {
 
 //========================================================================================
 
-	// TODO Capitalize the user username, firstname and lastname
-	Mono<User> capitalizeOne(Mono<User> mono) {
-		return null;
+  // TODO Capitalize the user username, firstname and lastname
+  Mono<User> capitalizeOne(Mono<User> mono) {
+    return mono.map(x ->
+      new User(x.getUsername().toUpperCase(Locale.ROOT),
+        x.getFirstname().toUpperCase(Locale.ROOT),
+        x.getLastname().toUpperCase(Locale.ROOT)));
+  }
+
+//========================================================================================
+
+  // TODO Capitalize the users username, firstName and lastName
+  Flux<User> capitalizeMany(Flux<User> flux) {
+		return flux.map(x ->
+			new User(x.getUsername().toUpperCase(Locale.ROOT),
+				x.getFirstname().toUpperCase(Locale.ROOT),
+				x.getLastname().toUpperCase(Locale.ROOT)));
 	}
 
 //========================================================================================
 
-	// TODO Capitalize the users username, firstName and lastName
-	Flux<User> capitalizeMany(Flux<User> flux) {
-		return null;
-	}
+  // TODO Capitalize the users username, firstName and lastName using #asyncCapitalizeUser
+  Flux<User> asyncCapitalizeMany(Flux<User> flux) {
+    return flux.flatMap(this::asyncCapitalizeUser);
+  }
 
-//========================================================================================
-
-	// TODO Capitalize the users username, firstName and lastName using #asyncCapitalizeUser
-	Flux<User> asyncCapitalizeMany(Flux<User> flux) {
-		return null;
-	}
-
-	Mono<User> asyncCapitalizeUser(User u) {
-		return Mono.just(new User(u.getUsername().toUpperCase(), u.getFirstname().toUpperCase(), u.getLastname().toUpperCase()));
-	}
+  Mono<User> asyncCapitalizeUser(User u) {
+    return Mono.just(new User(u.getUsername().toUpperCase(), u.getFirstname().toUpperCase(), u.getLastname().toUpperCase()));
+  }
 
 }
